@@ -3,6 +3,7 @@ import { jwtVerify } from 'jose';
 
 import {
   DEFAULT_LOGIN_REDIRECT,
+  testRoutes,
   apiRoutePrefix,
   authRoutes,
   publicRoutes,
@@ -12,6 +13,9 @@ import {
 export default async function middleware(req: NextRequest) {
   const { cookies } = req;
   const pathname = req.nextUrl.pathname;
+
+  const isTestRoute = testRoutes.includes(pathname);
+  if(isTestRoute) return NextResponse.next();
 
   const isApiRoute = pathname.startsWith(apiRoutePrefix);
   const isAuthRoute = authRoutes.includes(pathname);

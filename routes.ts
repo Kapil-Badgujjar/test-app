@@ -3,6 +3,12 @@
  * These routes do not require authentication
  * @type {string[]}
  */
+
+export const testRoutes = [
+  '/profile',
+  '/cart'
+]
+
 export const publicRoutes = [
   "/",
   "/auth/new-verification",

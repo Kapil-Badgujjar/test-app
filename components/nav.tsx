@@ -11,8 +11,10 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { useSession } from '@/context/SessionContext';
 import { getUserSession } from '@/utils/auth-function';
 import { deleteCookie } from '@/actions/logout'
+import { useRouter } from 'next/navigation';
 
 export const Nav = () => {
+  const router = useRouter();
   const { user, login, logout } = useSession();
   async function fetchSession(){
     const lastSession = await getUserSession();
@@ -28,7 +30,7 @@ export const Nav = () => {
   }
 
   useEffect(()=>{fetchSession()},[]);
-  useEffect(()=>{console.log("Navbar >> User:" , user);},[user]);
+  // useEffect(()=>{console.log("Navbar >> User:" , user);},[user]);
   return (
     <header className="sticky bg-blue-500 py-4">
       <Container>
@@ -51,9 +53,10 @@ export const Nav = () => {
                     </PopoverTrigger>
                     <PopoverContent className="w-fit mr-2">
                       <div className="w-full flex flex-col justify-start items-start gap-2 p-2 rounded-md">
-                        <button>My Account</button>
-                        <button>My Orders</button>
-                        <button onClick={logoutFunction}>
+                        <button className='cursor-pointer' onClick={()=>{router.push('/profile')}}>My Account</button>
+                        <button className='cursor-pointer'>My Orders</button>
+                        <button className='cursor-pointer' onClick={()=>{router.push('/cart')}}>Cart</button>
+                        <button className='cursor-pointer' onClick={logoutFunction}>
                           Logout
                         </button>
                       </div>

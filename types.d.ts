@@ -8,3 +8,15 @@ interface ProductType {
     stocks: number;
     offer: number;
   }
+
+interface CartProduct {
+  id: string;
+  quantity: number;
+  product:{
+      id:string;
+      image:string;
+      offer:number;
+      price:number;
+      productName:string;
+  }
+}
