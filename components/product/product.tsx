@@ -20,7 +20,7 @@ export const Product = ({
     <div className="flex flex-col justify-between w-full border border-gray-100 shadow-md rounded-sm p-4">
       <div>
         {/* Todo: Change image address to props imageSource */}
-        <div className="w-full flex justify-center" onClick={()=>{router.push(`/product/${id}`)}}>
+        <div className="cursor-pointer w-full flex justify-center" onClick={()=>{router.push(`/product/${id}`)}}>
           <Image
             className="object-cover transition ease-in-out duration-500 hover:scale-110"
             width={160}

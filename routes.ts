@@ -13,6 +13,15 @@ export const publicRoutes = [
 ];
 
 /**
+ * An array of dynamic routes that are accessible to the public
+ * These dynamic routes do not require authentication
+ * @type {string[]}
+ */
+export const dynamicPublicRoutes = [
+  "/product"
+]
+
+/**
  * An array of routes that are used for authentication
  * These routes will redirect logged in users to /settings
  * @type {string[]}

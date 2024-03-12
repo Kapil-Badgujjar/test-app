@@ -6,6 +6,7 @@ import {
   apiRoutePrefix,
   authRoutes,
   publicRoutes,
+  dynamicPublicRoutes
 } from "@/routes";
 
 export default async function middleware(req: NextRequest) {
@@ -13,16 +14,13 @@ export default async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
   const isApiRoute = pathname.startsWith(apiRoutePrefix);
-  const isPublicRoute = publicRoutes.includes(pathname);
   const isAuthRoute = authRoutes.includes(pathname);
+  const isPublicRoute = publicRoutes.includes(pathname);
+  const isDynamicPublicRoute = dynamicPublicRoutes.includes(pathname.split('/').slice(0,-1).join('/'));
 
   const token = cookies.get("supermartnextcookie")?.value;
 
-  if(isApiRoute){
-    return NextResponse.next();
-  }
-
-  if(isPublicRoute){
+  if(isApiRoute || isPublicRoute || isDynamicPublicRoute){
     return NextResponse.next();
   }
   
