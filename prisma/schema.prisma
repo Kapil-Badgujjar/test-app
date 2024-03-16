@@ -37,33 +37,35 @@ enum UserRole {
 }
 
 model User {
-  id                 String            @id @default(cuid()) @map("_id")
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
   name               String
   email              String            @unique
   emailVerified      DateTime?
   password           String
   phoneNumber        String?
-  isActive           Boolean?
+  isActive           Boolean?          @default(true)
   premiumMember      Boolean?
   registrationDate   DateTime?
   passwordResetToken String?
   verificationToken  String?
   address            Address[]
   profilePicture     String?
-  isBlocked          Boolean?
+  isBlocked          Boolean?          @default(true)
   role               UserRole          @default(USER)
-  orders             Order[]
+  userOrders         Order[]           @relation("UserRelation")
+  sellerOrder        Order[]           @relation("SellerRelation")
   favourite          Favourite[]
   cart               Cart[]
   productResponse    ProductFeedback[]
+  products           Product[]
 }
 
 model Address {
-  id             String  @id @default(cuid()) @map("_id")
-  user           User    @relation(fields: [userId], references: [id])
-  userId         String
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String   @db.ObjectId
   address        String
-  defaultAddress Boolean
+  defaultAddress Boolean? @default(false)
 }
 
 model Product {
@@ -74,7 +76,8 @@ model Product {
   category               String
   description            String
   stocks                 Int
-  sellerId               String?
+  seller                 User              @relation(fields: [sellerId], references: [id])
+  sellerId               String            @db.ObjectId
   offer                  Float
   isAssured              Boolean
   isActive               Boolean
@@ -88,7 +91,7 @@ model Product {
 model ProductFeedback {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  userId    String   @db.ObjectId
   product   Product  @relation(fields: [productId], references: [id])
   productId String   @db.ObjectId
   rating    Int
@@ -99,8 +102,8 @@ model ProductFeedback {
 
 model Favourite {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  user      User?   @relation(fields: [userId], references: [id])
-  userId    String?
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String  @db.ObjectId
   product   Product @relation(fields: [productId], references: [id])
   productId String  @db.ObjectId
 }
@@ -108,7 +111,7 @@ model Favourite {
 model Cart {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
   user      User    @relation(fields: [userId], references: [id])
-  userId    String
+  userId    String  @db.ObjectId
   product   Product @relation(fields: [productId], references: [id])
   productId String  @db.ObjectId
   quantity  Int
@@ -117,17 +120,19 @@ model Cart {
 model Order {
   id                 String        @id @default(auto()) @map("_id") @db.ObjectId
   paymentId          String
-  user               User          @relation(fields: [userId], references: [id])
-  userId             String
+  user               User          @relation(name: "UserRelation", fields: [userId], references: [id])
+  userId             String        @db.ObjectId
   address            String
   product            Product       @relation(fields: [productId], references: [id])
   productId          String        @db.ObjectId
+  seller             User          @relation(name: "SellerRelation", fields: [sellerId], references: [id])
+  sellerId           String        @db.ObjectId
   quantity           Int
   amount             Float
-  status             Status
-  paymentStatus      PaymentStatus
+  status             Status?        @default(initiated)
+  paymentStatus      PaymentStatus? @default(pending)
   shipmentTrackingId String
   orderDate          DateTime
-  cancelationRequest Boolean
-  returnStatus       ReturnStatus
+  cancelationRequest Boolean?       @default(false)
+  returnStatus       ReturnStatus?  @default(none)  
 }

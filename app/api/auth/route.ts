@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     // Fetch user details from the database
     const user = await DATABASE.user.findFirst({ where: { email: decoded.email } });
     if (user) {
-        const token = jwt.sign({id:user.id, name: user.name, email: user.email}, process.env.JWT_SECRET_KEY as string,{ expiresIn: '30m'});
+        const token = jwt.sign({id:user.id, name: user.name, email: user.email, role: user.role}, process.env.JWT_SECRET_KEY as string,{ expiresIn: '30m'});
         const response = NextResponse.json({
           id:user.id,
           name: user.name,

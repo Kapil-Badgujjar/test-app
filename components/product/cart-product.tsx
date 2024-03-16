@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { useCart } from "@/context/CartContext";
 import { useSession } from "@/context/SessionContext";
+import productPrice from "@/utils/product-price";
 
 export const CartProduct = ({ cartItem }: { cartItem: CartProduct }) => {
   const { user } = useSession();
@@ -67,8 +68,7 @@ export const CartProduct = ({ cartItem }: { cartItem: CartProduct }) => {
             <div className="text-lg font-semibold">
               &#8377; {Math.round(
               cartItem.quantity *
-                cartItem.product.price *
-                (1 - cartItem.product.offer / 100)
+                productPrice(cartItem.product.price ,cartItem.product.offer)
             )}
             </div>
           </div>

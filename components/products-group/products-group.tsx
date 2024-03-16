@@ -31,6 +31,7 @@ export default function ProductsGroup() {
                 id={p.id}
                 title={p.productName}
                 price={p.price}
+                offer={p.offer}
                 imageSource={p.image} // Potential error handling for invalid image
               />
           </span>

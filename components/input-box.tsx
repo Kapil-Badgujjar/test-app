@@ -8,6 +8,7 @@ interface InputBoxProps {
   placeholder: string;
   name: string;
   isDisabled?: boolean;
+  required?: boolean;
 }
 export const InputBox = ({
   label,
@@ -15,7 +16,8 @@ export const InputBox = ({
   type,
   placeholder,
   name,
-  isDisabled = false
+  isDisabled = false,
+  required = false
 }: InputBoxProps,) => {
   return (
     <div className="flex flex-col gap-2">
@@ -25,13 +27,14 @@ export const InputBox = ({
         name={name}
         placeholder={placeholder}
         disabled={isDisabled} 
+        required={required}
       />:<Input
-        // className="text-sm font-light outline-none border border-gray-500 p-1 rounded-sm"
         type={type}
         id={id}
         name={name}
         placeholder={placeholder}
         disabled={isDisabled}
+        required={required}
       />}
     </div>
   );

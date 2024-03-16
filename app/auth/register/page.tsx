@@ -1,6 +1,13 @@
 import { AuthCard } from "@/components/auth/auth-card"
 import { AuthForm } from "@/components/auth/auth-form"
 import { AuthFormField } from "@/components/auth/auth-form-field"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 export default function Register(){
   return (
     <div>
@@ -21,6 +28,7 @@ export default function Register(){
                 type="text"
                 placeholder="Username"
                 name="username"
+                required
                 />
                 <AuthFormField 
                 label="Email"
@@ -28,6 +36,7 @@ export default function Register(){
                 type="email"
                 placeholder="Email"
                 name="email"
+                required
                 />
                 <AuthFormField 
                 label="Password"
@@ -35,6 +44,7 @@ export default function Register(){
                 type="password"
                 placeholder="Password"
                 name="password"
+                required
                 />
                 <AuthFormField 
                 label="Confirm Password"
@@ -42,9 +52,22 @@ export default function Register(){
                 type="password"
                 placeholder="Confirm Password"
                 name="confirmPassword"
+                required
                 />
+                <div className='flex-1 flex flex-col gap-2'>
+                    <label className='text-black'>Register as:</label>
+                    <Select name="role" required>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="USER">User</SelectItem>
+                            <SelectItem value="SELLER">Seller</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                {/* <input className="hidden" type="text" id="role" name="role" value="USER" placeholder="role"/> */}
             </div>
-
             </AuthForm>
         </AuthCard>
     </div>

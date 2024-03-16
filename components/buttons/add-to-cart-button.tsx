@@ -7,7 +7,7 @@ interface AddToCartButtonProps{
 }
 
 export const AddToCartButton = ({id}:AddToCartButtonProps) => {
-    const { setCartItems, cartItems, addToCart, removeFromCart, clearCart, totalItems } = useCart();
+    const { addToCart } = useCart();
     const {user} = useSession();
     const addInCart = async ()=>{
         const result = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/cart/add-to-cart`,{ method: "POST", body: JSON.stringify({productId: id, userId: user?.id})});
@@ -17,6 +17,7 @@ export const AddToCartButton = ({id}:AddToCartButtonProps) => {
             console.log(data);
         }
     }
+    if(user?.role === 'SELLER') return (<>* Your are a seller. Login as user to add products to client!</>);
     return (
         <span>
             <Button 

@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from 'jose';
 
 import {
-  DEFAULT_LOGIN_REDIRECT,
   testRoutes,
+  userRoutes,
+  sellerRoutes,
   apiRoutePrefix,
   authRoutes,
   publicRoutes,
@@ -16,6 +17,9 @@ export default async function middleware(req: NextRequest) {
 
   const isTestRoute = testRoutes.includes(pathname);
   if(isTestRoute) return NextResponse.next();
+
+  const isUserRoute = userRoutes.includes(pathname);
+  const isSellerRoutes = sellerRoutes.includes(pathname);
 
   const isApiRoute = pathname.startsWith(apiRoutePrefix);
   const isAuthRoute = authRoutes.includes(pathname);
@@ -38,7 +42,15 @@ export default async function middleware(req: NextRequest) {
   
   try {
       const { payload } = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET_KEY));
-      console.log(payload);
+      console.log("Payload >>",payload);
+
+      if(isUserRoute&&payload.role === "USER"||isSellerRoutes&&payload.role === "SELLER"){
+        return NextResponse.next();
+      }
+      if(isUserRoute&&payload.role === "SELLER"||isSellerRoutes&&payload.role === "USER"){
+        return NextResponse.redirect(new URL("/not-allowed", req.url));
+      }
+
       if(isAuthRoute) {
         if (payload) {
           return NextResponse.redirect(new URL("/", req.url));
@@ -48,6 +60,11 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   } catch (error) {
     console.error("Error verifying JWT token:", error);
+    if (error instanceof Error) {
+      if ((error as any).name === 'JWTExpired') {
+        if (error.name === 'JWTExpired') return NextResponse.next();
+      }
+    }
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 }

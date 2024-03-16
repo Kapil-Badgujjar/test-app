@@ -7,6 +7,7 @@ interface AuthFormFieldProps {
   type: string;
   placeholder: string;
   name: string;
+  required?: boolean;
 }
 export const AuthFormField = ({
   label,
@@ -14,6 +15,7 @@ export const AuthFormField = ({
   type,
   placeholder,
   name,
+  required = false
 }: AuthFormFieldProps,) => {
   return (
     <div className="flex flex-col gap-2">
@@ -22,12 +24,14 @@ export const AuthFormField = ({
         id={id} 
         name={name}
         placeholder={placeholder}
+        required={required}
       />:<Input
         // className="text-sm font-light outline-none border border-gray-500 p-1 rounded-sm"
         type={type}
         id={id}
         name={name}
         placeholder={placeholder}
+        required={required}
       />}
     </div>
   );

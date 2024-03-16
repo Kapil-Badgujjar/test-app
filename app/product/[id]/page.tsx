@@ -1,6 +1,7 @@
 import { AddToCartButton } from "@/components/buttons/add-to-cart-button";
 import { ReadMoreComments } from "@/components/buttons/read-more-comments";
 import { Product } from "@/components/product/product";
+import productPrice from "@/utils/product-price";
 import Image from "next/image";
 
 const getData = async (): Promise<ProductType[]> => {
@@ -53,11 +54,11 @@ export default async function ProductPage({
           <div className="flex flex-col gap-2">
             <h2 className="text-2xl font-semibold">Price: </h2>
             <h1 className="text-3xl font-semibold text-[#3C6E71]">
-              &#8377; {currentProduct.price}/-
+              &#8377; {productPrice(currentProduct.price, currentProduct.offer)}/-
             </h1>
-            <p className="text-xl text-[#353535] font-bold line-through">
-              &#8377; {JSON.stringify(Math.round(Number(currentProduct.price)*1.08))}/-
-            </p>
+            {currentProduct.offer > 0 && <p className="text-xl text-[#353535] font-bold line-through">
+              &#8377; {JSON.stringify(Math.round(Number(currentProduct.price)))}/-
+            </p>}
           </div>
           <AddToCartButton id={id} />
           <div className="flex flex-col gap-4 ">
@@ -83,12 +84,13 @@ export default async function ProductPage({
           {products.map(
             (
               p: ProductType // Consistent type usage
-            ) => (
+            ) =>(
               <span key={p.id} className="w-full flex h-full">
                 <Product
                   id={p.id}
                   title={p.productName}
                   price={p.price}
+                  offer={p.offer}
                   imageSource={p.image} // Potential error handling for invalid image
                 />
               </span>

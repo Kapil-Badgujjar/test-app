@@ -34,8 +34,6 @@ export const AuthForm = ({
     formData.forEach((value, key) => {
       formValues[key] = value.toString();
     });
-
-    
     try {
       let response;
       switch (authFunctionId) {
@@ -44,35 +42,43 @@ export const AuthForm = ({
             email: formValues.email,
             password: formValues.password,
           })
-          if(response){
+          if(!response.errormsg){
             login(response);
             router.push('/');
           }
+          setErrorMessage(response.errormsg);
           break;
         case 2:
           response = await signupFunction({
             email: formValues.email,
             password: formValues.password,
             username: formValues.username,
-            confirmPasssword: formValues.confirmPassword, // Ensure this key matches your function's parameter.
+            confirmPasssword: formValues.confirmPassword,
+            role: formValues.role,
           });
+          setErrorMessage(response.errormsg);
           break;
 
         case 3:
           response = await forgotPasswordFunction({ email: formValues.email });
+          setErrorMessage(response.errormsg);
           break;
         default:
           console.log("Invalid authFunctionId");
       }
-      // console.log(response);
+      // setTimeout(() => {
+      //   setErrorMessage("");
+      // }, 4000);
     } catch (error: any) {
       const errorMessage = error?.message;
-      console.error("Error:", error);
       setErrorMessage(errorMessage); // Set error message for display
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 4000);
+      // setTimeout(() => {
+      //   setErrorMessage("");
+      // }, 4000);
     }
+    setTimeout(() => {
+      setErrorMessage("");
+    }, 4000);
   };
 
   return (

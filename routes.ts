@@ -6,11 +6,23 @@
 
 export const testRoutes = [
   '/profile',
+  '/cart',
+  '/seller/profile',
+  '/seller/dashboard'
+]
+
+export const userRoutes = [
+  '/profile',
   '/cart'
+]
+export const sellerRoutes = [
+  '/seller/profile',
+  '/seller/dashboard'
 ]
 
 export const publicRoutes = [
   "/",
+  "/_not-found",
   "/auth/new-verification",
   "/home",
   "/home/store",
@@ -24,7 +36,9 @@ export const publicRoutes = [
  * @type {string[]}
  */
 export const dynamicPublicRoutes = [
-  "/product"
+  "/product",
+  "/order/success",
+  "/order/failed",
 ]
 
 /**
@@ -35,6 +49,7 @@ export const dynamicPublicRoutes = [
 export const authRoutes = [
   "/auth/login",
   "/auth/register",
+  "/auth/forgot-password",
   "/auth/error",
   "/auth/reset",
   "/auth/new-password",

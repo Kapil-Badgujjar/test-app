@@ -2,20 +2,17 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import productPrice from "@/utils/product-price";
 
 interface ProductProps {
   id: string;
   title: string;
   price: number;
-  offer: number;
   imageSource: string;
 }
-export const Product = ({
+export const SellerProduct = ({
   id,
   title,
   price,
-  offer,
   imageSource,
 }: ProductProps) => {
   const router = useRouter();
@@ -35,16 +32,23 @@ export const Product = ({
       </div>
       <div className="flex flex-col gap-4">
         <div className="mt-2 h-20">
-          <h1>&#8377; {productPrice(price,offer)}/- </h1>
+          <h1>&#8377; {price}/-</h1>
           <p className="text-sm md:text-lg font-semibold">{title}</p>
         </div>
-        <div className="w-full" onClick={()=>{router.push(`/product/${id}`)}}>
+        <div className="w-full flex flex-col gap-2">
+          {/* <Button
+            size="sm"
+            // className="w-full hover:bg-sky-400 hover:text-primary-foreground"
+            className="w-full bg-gray-200 text-black hover:bg-blue-500 hover:text-white"
+          >
+            Edit
+          </Button> */}
           <Button
             size="sm"
             // className="w-full hover:bg-sky-400 hover:text-primary-foreground"
             className="w-full bg-gray-200 text-black hover:bg-blue-500 hover:text-white"
           >
-            Buy now
+            Remove
           </Button>
         </div>
       </div>
