@@ -59,7 +59,7 @@ export const POST =  async(
               name: item.product.productName,
               // description: item.product.productName,
             },
-            unit_amount: item.product.price*(1-item.product.offer/100) * 100, // Convert to cents
+            unit_amount: Math.round(item.product.price*(1-item.product.offer/100)) * 100, // Convert to cents
           },
           quantity: item.quantity,
         })),
