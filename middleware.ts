@@ -11,12 +11,26 @@ import {
   dynamicPublicRoutes
 } from "@/routes";
 
+const allowedOrigins = [
+  'https://checkout.stripe.com',
+  'https://test-app-kapil-badgujjar.vercel.app',
+  // Add other domains as needed
+];
+
 export default async function middleware(req: NextRequest) {
+  const response = NextResponse.next();
+  const requestOrigin = req.headers.get('origin');
+  if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
+    response.headers.set('Access-Control-Allow-Origin', requestOrigin);
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  }
+
   const { cookies } = req;
   const pathname = req.nextUrl.pathname;
 
   const isTestRoute = testRoutes.includes(pathname);
-  if(isTestRoute) return NextResponse.next();
+  if(isTestRoute) return response;
 
   const isUserRoute = userRoutes.includes(pathname);
   const isSellerRoutes = sellerRoutes.includes(pathname);
@@ -29,11 +43,11 @@ export default async function middleware(req: NextRequest) {
   const token = cookies.get("supermartnextcookie")?.value;
 
   if(isApiRoute || isPublicRoute || isDynamicPublicRoute){
-    return NextResponse.next();
+    return response
   }
   
   if(isAuthRoute && !token){
-    return NextResponse.next();
+    return response
   }
 
   if (!token) {
@@ -45,7 +59,7 @@ export default async function middleware(req: NextRequest) {
       console.log("Payload >>",payload);
 
       if(isUserRoute&&payload.role === "USER"||isSellerRoutes&&payload.role === "SELLER"){
-        return NextResponse.next();
+        return response
       }
       if(isUserRoute&&payload.role === "SELLER"||isSellerRoutes&&payload.role === "USER"){
         return NextResponse.redirect(new URL("/not-allowed", req.url));
@@ -57,12 +71,12 @@ export default async function middleware(req: NextRequest) {
         }
         return null;
       }
-    return NextResponse.next();
+    return response
   } catch (error) {
     console.error("Error verifying JWT token:", error);
     if (error instanceof Error) {
       if ((error as any).name === 'JWTExpired') {
-        if (error.name === 'JWTExpired') return NextResponse.next();
+        if (error.name === 'JWTExpired') return response;
       }
     }
     return NextResponse.redirect(new URL("/auth/login", req.url));
