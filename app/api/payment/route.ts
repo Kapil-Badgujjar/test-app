@@ -4,7 +4,6 @@ import { DATABASE } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { randomBytes } from 'crypto';
 
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 export const POST =  async(
@@ -36,7 +35,7 @@ export const POST =  async(
               sellerId: item.product.sellerId,
               quantity: item.quantity,
               amount: item.quantity * item.product.price,
-              shipmentTrackingId: shipmentTrackingIdValue,
+              shipmentTrackingId: 'trkid-'+shipmentTrackingIdValue,
               orderDate: new Date().toISOString(),
               cancelationRequest: false
           }
@@ -60,7 +59,7 @@ export const POST =  async(
               name: item.product.productName,
               // description: item.product.productName,
             },
-            unit_amount: item.product.price * 100, // Convert to cents
+            unit_amount: item.product.price*(1-item.product.offer/100) * 100, // Convert to cents
           },
           quantity: item.quantity,
         })),

@@ -5,15 +5,16 @@
  */
 
 export const testRoutes = [
-  '/profile',
-  '/cart',
+  // '/profile',
+  // '/cart',
   '/seller/profile',
   '/seller/dashboard'
 ]
 
 export const userRoutes = [
   '/profile',
-  '/cart'
+  '/cart',
+  '/order',
 ]
 export const sellerRoutes = [
   '/seller/profile',
@@ -23,6 +24,7 @@ export const sellerRoutes = [
 export const publicRoutes = [
   "/",
   "/_not-found",
+  "/store",
   "/auth/new-verification",
   "/home",
   "/home/store",

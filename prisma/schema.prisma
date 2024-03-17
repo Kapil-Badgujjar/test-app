@@ -131,7 +131,7 @@ model Order {
   amount             Float
   status             Status?        @default(initiated)
   paymentStatus      PaymentStatus? @default(pending)
-  shipmentTrackingId String
+  shipmentTrackingId String         
   orderDate          DateTime
   cancelationRequest Boolean?       @default(false)
   returnStatus       ReturnStatus?  @default(none)  

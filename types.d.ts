@@ -35,3 +35,19 @@ interface CartProduct {
       sellerId:string;
   }
 }
+
+interface OrderProductType {
+  id: string;
+  paymentId:string;
+  paymentStatus: string;
+  quantity: number;
+  amount: number;
+  status: string;
+  shipmentTrackingId: string;
+  product:{
+      id: string;
+      image: string;
+      productName: string;
+      price:number;
+  }
+}
