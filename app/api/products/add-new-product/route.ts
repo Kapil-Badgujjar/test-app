@@ -5,18 +5,39 @@ import fs from 'fs/promises'; // Import for promise-based file system operations
 import { firbaseStorage } from "@/lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-async function uploadImage( imageFile: any, cryptoCode: string){
+async function uploadImage(imageFile: any, cryptoCode: string) {
+  try {
     const fileName = cryptoCode + imageFile.name;
-    const metadata = {
-        contentType: imageFile.mimetype
-    }
+    const metadata = { contentType: imageFile.type };
+
+    // Convert the File object to a Buffer
     const arrayBuffer = await imageFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
+
     const imageRef = ref(firbaseStorage, 'images/' + fileName);
     const uploadTask = await uploadBytes(imageRef, buffer, metadata);
     const downloadUrl = await getDownloadURL(uploadTask.ref);
     return downloadUrl;
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    throw error; // Re-throw the error to be handled in the calling function
+  }
 }
+
+
+// async function uploadImage( imageFile: any, cryptoCode: string){
+//     const fileName = cryptoCode + imageFile.name;
+//     const metadata = {
+//         contentType: imageFile.type
+//     }
+//     const arrayBuffer = await imageFile.arrayBuffer();
+//     const buffer = Buffer.from(arrayBuffer);
+
+//     const imageRef = ref(firbaseStorage, 'images/' + fileName);
+//     const uploadTask = await uploadBytes(imageRef, buffer, metadata);
+//     const downloadUrl = await getDownloadURL(uploadTask.ref);
+//     return downloadUrl;
+// }
 
 // async function saveFile(imageFile:any) {
 //   const fileName = imageFile.name; // Get the original filename
