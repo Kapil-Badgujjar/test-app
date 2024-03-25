@@ -7,7 +7,7 @@ export default function StorePage() {
   const [products, setProducts] = useState<ProductType[]>([]);
   
   async function getData(){
-    const result =  await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/get-all-products`);
+    const result =  await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/get-all-products`,{ cache: 'no-cache'});
     if(result.ok){
       const body = await result.json();
       console.log(body);

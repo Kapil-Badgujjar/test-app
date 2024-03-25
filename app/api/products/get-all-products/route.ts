@@ -15,7 +15,7 @@ export const GET = async () => {
         offer:true,
       },
     });
-    return new NextResponse(JSON.stringify(products),{status: 200});
+    return new NextResponse(JSON.stringify(products),{status: 200, headers: { "Content-Type": "application/json" },});
   } catch (err) {
     console.log(err);
     return new NextResponse(JSON.stringify({message: "Something went wrong!"}),{status: 500});
