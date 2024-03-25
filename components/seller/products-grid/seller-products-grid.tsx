@@ -22,10 +22,7 @@ export const SellerProductsGrid = () => {
     const { user } = useSession();
     const [products, setProducts] = useState<ProductType[]>([]);
     const getData = async () => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/get-all-products`, {
-          cache: "no-store",
-        });
-      
+        const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/get-all-products`);
         if (res.ok) {
             const data =  await res.json();
             console.log(data);

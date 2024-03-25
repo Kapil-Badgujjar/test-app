@@ -1,6 +1,4 @@
 'use client'
-
-'use client'
 import React, { useEffect, useState } from 'react'
 import { Product } from '@/components/product/product';
 import { Container } from '@/components/container';
